@@ -24,21 +24,37 @@ public class LeerJson {
     private ArrayList<String> etiquetas_para_columna = new ArrayList<String>();
     private ArrayList<String> Autores = new ArrayList<String>();
     private ArrayList<String> links = new ArrayList<String>();
-    private String contenido = "";
+    private String articulos = "";
 
     public LeerJson() {
+    }
+
+    public void limpiarVariables_dentro_articulo() {
+        Imagen = "";
+        Titulo = "";
+        Sinopsis = "";
+        Autores.clear();
+        Fecha_de_publicacion = "";
+        Duracion = "";
+        links.clear();
+    }
+
+    public void limpiarVariable_articulos() {
+        articulos = "";
+    }
+
+    public void limpiarVariable_columna() {
+        etiquetas_para_columna.clear();
+
     }
 
     public void leer(String etiqueta, String direccion) {
         String path = direccion;
         //"/home/lp-ub-14/NetBeansProjects/catalogo/contenido/v2b.json"
-        etiquetas_para_columna.clear();
-        Autores.clear();
-        links.clear();
-        contenido = "";
-        Titulo = "";Sinopsis = ""; Imagen = "";
-            Fecha_de_publicacion = ""; Duracion = "";
-        int i =0;
+        limpiarVariable_articulos();
+        limpiarVariables_dentro_articulo();
+        limpiarVariable_columna();
+        int i = 0;
         JSONParser parser = new JSONParser();
 
         try {
@@ -51,15 +67,16 @@ public class LeerJson {
             }
             JSONArray lst_articulos = (JSONArray) jsonBase.get("v2b");// lista de objetosJSON
             for (Object articulo : lst_articulos) {
+                limpiarVariables_dentro_articulo();
                 JSONObject Articulo = (JSONObject) articulo;// un objeto
                 //Etiquetas [x]
                 JSONArray Etiquetas = (JSONArray) Articulo.get("Etiquetas");
                 for (Object etiquetas : Etiquetas) {
 
                     String Etiqueta = (String) etiquetas;
-                    if ((Etiqueta.equalsIgnoreCase(etiqueta) 
-                            || etiqueta.equalsIgnoreCase("todo") )&&  i==0) {
-                        i=1;
+                    if ((Etiqueta.equalsIgnoreCase(etiqueta)
+                            || etiqueta.equalsIgnoreCase("todo")) && i == 0) {
+                        i = 1;
                         //Titulo
                         Titulo = (String) Articulo.get("Titulo");
 
@@ -87,11 +104,11 @@ public class LeerJson {
 
                             links.add((String) enlaces);
                         }
-                        contenido += crearArticulo(Imagen, Titulo, Sinopsis,
+                        articulos += crearArticulo(Imagen, Titulo, Sinopsis,
                                 Autores, Fecha_de_publicacion, Duracion, links);
                     }//cierra if que verifica las etiquetas
                 }// cierra ek for que obtiene las etiquetas
-                i=0;
+                i = 0;
             }// cierra el for que obtienelos articulos
 
         } catch (ParseException e) {
@@ -164,8 +181,9 @@ public class LeerJson {
         return Duracion;
     }
 
-    public String getContenido() {
-        return contenido;
+    public String getArticulo() {
+
+        return articulos;
     }
 
     public ArrayList<String> getEtiquetas_para_columna() {

@@ -245,7 +245,7 @@ public class catalogo extends HttpServlet {
 
             String path = path_de_catalogos + "/" + menu + ".json";
             aLeerJson.leer(etiqueta, path);
-            datos = aLeerJson.getContenido();
+            datos = aLeerJson.getArticulo();
         } else {
             datos = "directorio de catalogos no encontrado";
         }
