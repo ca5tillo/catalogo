@@ -30,16 +30,8 @@ import org.json.simple.parser.ParseException;
  * @author lp-ub-14
  */
 public class catalogo extends HttpServlet {
+LeerJson a = new LeerJson("hola");
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -87,6 +79,7 @@ public class catalogo extends HttpServlet {
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
             out.println(getlstcatalogos_paraEl_Menu(path_de_catalogos));
+            out.println("<br>"+a.getTitulo());
 //            articulos=contenido(menu ,columna);
 //            articulos = leerJson("web");
             out.println("</section>");
@@ -149,26 +142,24 @@ public class catalogo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private boolean para_ignorar_archivos_temporales(String dato) {
+        // si es un archivo temporal devolvera TRUE
+        // temporal es alquel que termina con el simbolo ~
+        boolean a = false;
+        Pattern pat = Pattern.compile(".*~");
+        Matcher mat = pat.matcher(dato);
+        if (mat.matches()) {
+            System.out.println("SI");
+            a = true;
+        } else {
+            System.out.println("NO");
+        }
+        return a;
+    }
+
     private String getlstcatalogos_paraEl_Menu(String path_de_catalogos) {
         //recibe la carpeta donde se encuentran los archivos JSON
         class Comprobar {
-            /*
-             verificamos si son archivos temporales 
-             devuelve tru si lo son 
-             */
-
-            private boolean para_ignorar_archivos_temporales(String dato) {
-                boolean a = false;
-                Pattern pat = Pattern.compile(".*~");
-                Matcher mat = pat.matcher(dato);
-                if (mat.matches()) {
-                    System.out.println("SI");
-                    a = true;
-                } else {
-                    System.out.println("NO");
-                }
-                return a;
-            }
 
             private String quitarExtenciones(String nombre) {
                 String dato = nombre;
@@ -187,41 +178,55 @@ public class catalogo extends HttpServlet {
         Comprobar comprobar = new Comprobar();
         String menu = "";
 
-        File[] ficheros = getcatalogos(path_de_catalogos);
-        
-        if (ficheros.length > 0) {
-            for (File fichero : ficheros) {
-                if (!comprobar.para_ignorar_archivos_temporales(fichero.getName())) {
-                    String mmenu = comprobar.quitarExtenciones(fichero.getName());
-                    menu += "<li><a href=\"./catalogo?menu=" + mmenu + "&columna=Todo\">"
-                            + mmenu + "</a></li>";
-                }
-            }
-        }
+        ArrayList<String> Catalogos = getcatalogos(path_de_catalogos);
 
+        if (verificar_path_de_catalogos(path_de_catalogos)) {
+            for (String fichero : Catalogos) {
+                String mmenu = comprobar.quitarExtenciones(fichero);
+                menu += "<li><a href=\"./catalogo?menu=" + mmenu + "&columna=todo\">"
+                        + mmenu + "</a></li>";
+
+            }
+        } else {
+            menu = "NO se encontro la carpeta catalogos";
+        }
         return menu;
     }
 
-    private File[] getcatalogos(String path_de_catalogos) {
+    private boolean verificar_path_de_catalogos(String path_de_catalogos) {
+        boolean a = false;
+        File f = new File(path_de_catalogos);
+        if (f.exists()) {
+            a = true;
+        }
+        return a;
+    }
+
+    private ArrayList<String> getcatalogos(String path_de_catalogos) {
         ArrayList<String> Catalogos = new ArrayList<>();
-        File[] catalogos = null;
+        Catalogos.clear();
+
         File f = new File(path_de_catalogos);
         if (f.exists()) {
             //System.out.println("Directorio existe ");
-            catalogos = f.listFiles();
-        } else {
-            System.out.println("Directorio no existe ");
-            // SI NO ENCUENTRA EL DIRECTORIO SE CAE LA PAGINA
+            File[] catalogos = f.listFiles();
+            for (File fichero : catalogos) {
+                if (!para_ignorar_archivos_temporales(fichero.getName())) {
+                    String tem = fichero.getName();
+                    Catalogos.add(tem);
+                }
+            }
         }
-        return catalogos;
+        return Catalogos;
     }
 
     private String contenido(String menu, String columna) {
+
         String contenido = "";
         switch (menu) {
-            case "V2B":
+            case "v2b":
                 switch (columna) {
-                    case "Todo":
+                    case "todo":
 
                         break;
                     case "Programacion":
@@ -243,9 +248,11 @@ public class catalogo extends HttpServlet {
     }
 
     private String leerJson(String etiqueta) {
+        
         String contenido = "";
         String Titulo = "", Sinopsis = "", Imagen = "",
                 Fecha_de_publicacion = "", Duracion = "";
+        ArrayList<String> etiquetas_para_columna = new ArrayList<String>();
         ArrayList<String> Autores = new ArrayList<String>();
         ArrayList<String> links = new ArrayList<String>();
         Autores.clear();
@@ -254,12 +261,15 @@ public class catalogo extends HttpServlet {
 
         try {
             Object base = parser.parse(new FileReader("/home/lp-ub-14/NetBeansProjects/catalogo/contenido/v2b.json"));
-
             JSONObject jsonBase = (JSONObject) base;
-
-            JSONArray lstbase = (JSONArray) jsonBase.get("v2b");
-            for (Object articulo : lstbase) {
-                JSONObject Articulo = (JSONObject) articulo;
+            
+            JSONArray lst_etiquetas = (JSONArray) jsonBase.get("Etiquetas");
+            for (Object para_columna : lst_etiquetas) {
+                etiquetas_para_columna.add((String) para_columna);
+            }
+            JSONArray lst_articulos = (JSONArray) jsonBase.get("v2b");// lista de objetosJSON
+            for (Object articulo : lst_articulos) {
+                JSONObject Articulo = (JSONObject) articulo;// un objeto
                 //Etiquetas [x]
                 JSONArray Etiquetas = (JSONArray) Articulo.get("Etiquetas");
                 for (Object etiquetas : Etiquetas) {
@@ -358,7 +368,7 @@ public class catalogo extends HttpServlet {
 
     private String columnaParaV2B() {
         String links = ""
-                + "<blockquote><a href=\"./catalogo?menu=V2B&columna=Todo\">Todo</a></blockquote>\n"
+                + "<blockquote><a href=\"./catalogo?menu=V2B&columna=todo\">Todo</a></blockquote>\n"
                 + "<blockquote><a href=\"./catalogo?menu=V2B&columna=Programacion\">Programacion</a></blockquote>\n"
                 + "<blockquote><a href=\"./catalogo?menu=V2B&columna=Web\">Web</a></blockquote>\n";
 
