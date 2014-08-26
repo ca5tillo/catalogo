@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Ejemplo de HTML5">
+        <meta name="keywords" content="HTML5, CSS3, JavaScript">
+        <title>Catálogo</title>
+        <link rel="stylesheet" href="misestilos.css">
+        <script type="text/javascript">
+            function cargaXML()
+            {
+                var conexion;
+                var txt, x, i;
+                if (window.XMLHttpRequest)
+                {
+                    conexion = new XMLHttpRequest();
+                }
+                else
+                {
+                    conexion = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                conexion.onreadystatechange = function()
+                {
+                    if (conexion.readyState == 4 && conexion.status == 200)
+                    {
+                        xmlDoc = conexion.responseXML;
+                        txt = "";
+
+                        x = xmlDoc.getElementsByTagName("titulo");
+
+
+
+                        txt = x[0].childNodes[0].nodeValue;
+
+                        document.getElementById("myDiv").innerHTML = txt;
+                    }
+                }
+                conexion.open("GET", "discoteca.xml", true);
+                conexion.send();
+            }
+        </script>
+    </head>
+    <body>
+        <div id="agrupar">
+            <header id="cabecera">
+                <h1>Mi Catálogo</h1>
+            </header>
+            <nav id="menu">
+                <ul>
+                    <li><a href="./catalogo?ID=1&menu=Fran">principal</a></li>
+                    <li>Software</li>
+                    <li>Drivers</li>
+                    <li>Sistemas Operativos</li>
+                    <li>Imagenes</li>
+                    <li>Documentos</li>
+                    <li>Libros</li>
+                    <li>tutoriales</li>
+                </ul>
+            </nav>
+            <section id="seccion">
+                <h2>Mi coleccion:</h2>
+                <div id="myDiv">
+                </div>
+                <button type="button" onclick="cargaXML()">Tomar mi coleccion</button>  
+                
+                <form method="post" action="./ControladorVuelosD" >
+                                           
+                                            Origen<br>
+                                            <input type="search" name ="origen" value="Albania" required><br><br>
+                                        
+                                            <input type="submit" value="buscar">
+                                        </form>
+            </section>
+            <aside id="columna">
+                <blockquote>Mensaje número uno</blockquote>
+                <blockquote>Mensaje número dos</blockquote>
+            </aside>
+            <footer id="pie">
+                Derechos Reservados &copy; 
+            </footer>
+
+        </div>
+    </body>
+</html>
