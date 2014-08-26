@@ -131,6 +131,13 @@ public class LeerJson {
                 }
                 return autores;
             }
+            private String links(ArrayList<String> links){
+                String datos="";
+                for (String string : links) {
+                    datos += "<a href=\""+string+"\">"+string+"</a><br>";
+                }
+                return datos;
+            }
         }
         secciones sc = new secciones();
         String articulo = "";
@@ -150,9 +157,7 @@ public class LeerJson {
                 + "                              Formadores: " + sc.autores(autores) + "<br>\n"
                 + "                              Fecha de publicación: " + Fecha_de_publicacion + "<br>\n"
                 + "                              Duración: " + Duracion + "<br><br>\n"
-                + "                              \n"
-                + "                              <a href=\"\">Carpeta</a><br>\n"
-                + "                              <a href=\"\">rar</a>\n"
+                +                                    sc.links(links)
                 + "                           </td>\n"
                 + "                        </tr>\n"
                 + "                    </table>\n"
