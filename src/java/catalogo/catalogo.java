@@ -73,7 +73,7 @@ public class catalogo extends HttpServlet {
                     "<nav id=\"menu\">\n"
                     + "                <ul>\n"
                     + "                     <li><a href=\"./catalogo?menu=principal\">principal</a></li>"
-                    + getlstcatalogos_paraEl_Menu(path_de_catalogos)
+                    + menu(path_de_catalogos)
                     + "                </ul>\n"
                     + "            </nav>"
             );
@@ -155,7 +155,34 @@ public class catalogo extends HttpServlet {
         return a;
     }
 
-    private String getlstcatalogos_paraEl_Menu(String path_de_catalogos) {
+    private boolean verificar_path_de_catalogos(String path_de_catalogos) {
+        boolean a = false;
+        File f = new File(path_de_catalogos);
+        if (f.exists()) {
+            a = true;
+        }
+        return a;
+    }
+
+    private ArrayList<String> getcatalogos(String path_de_catalogos) {
+        ArrayList<String> Catalogos = new ArrayList<>();
+        Catalogos.clear();
+
+        File f = new File(path_de_catalogos);
+        if (f.exists()) {
+            //System.out.println("Directorio existe ");
+            File[] catalogos = f.listFiles();
+            for (File fichero : catalogos) {
+                if (!para_ignorar_archivos_temporales(fichero.getName())) {
+                    String tem = fichero.getName();
+                    Catalogos.add(tem);
+                }
+            }
+        }
+        return Catalogos;
+    }
+
+    private String menu(String path_de_catalogos) {
         //recibe la carpeta donde se encuentran los archivos JSON
         class Comprobar {
 
@@ -191,33 +218,6 @@ public class catalogo extends HttpServlet {
         return menu;
     }
 
-    private boolean verificar_path_de_catalogos(String path_de_catalogos) {
-        boolean a = false;
-        File f = new File(path_de_catalogos);
-        if (f.exists()) {
-            a = true;
-        }
-        return a;
-    }
-
-    private ArrayList<String> getcatalogos(String path_de_catalogos) {
-        ArrayList<String> Catalogos = new ArrayList<>();
-        Catalogos.clear();
-
-        File f = new File(path_de_catalogos);
-        if (f.exists()) {
-            //System.out.println("Directorio existe ");
-            File[] catalogos = f.listFiles();
-            for (File fichero : catalogos) {
-                if (!para_ignorar_archivos_temporales(fichero.getName())) {
-                    String tem = fichero.getName();
-                    Catalogos.add(tem);
-                }
-            }
-        }
-        return Catalogos;
-    }
-
     private String columna(String menu, String path_de_catalogos) {
         String datos = "";
         if (verificar_path_de_catalogos(path_de_catalogos)) {
@@ -251,152 +251,6 @@ public class catalogo extends HttpServlet {
         }
 
         return datos;
-    }
-
-    private String contenido(String menu, String columna) {
-
-        String contenido = "";
-        switch (menu) {
-            case "v2b":
-                switch (columna) {
-                    case "todo":
-
-                        break;
-                    case "Programacion":
-
-                        break;
-                    case "Web":
-
-                        break;
-                }
-                break;
-            case "Drivers":
-                //    out.println("ESTAMOS EN drivers");
-                break;
-            case "Sistemas Operativos":
-                // out.println("ESTAMOS EN sistemas operativos");
-                break;
-        }
-        return contenido;
-    }
-
-    private String leerJson(String etiqueta) {
-
-        String contenido = "";
-        String Titulo = "", Sinopsis = "", Imagen = "",
-                Fecha_de_publicacion = "", Duracion = "";
-        ArrayList<String> etiquetas_para_columna = new ArrayList<String>();
-        ArrayList<String> Autores = new ArrayList<String>();
-        ArrayList<String> links = new ArrayList<String>();
-        Autores.clear();
-        links.clear();
-        JSONParser parser = new JSONParser();
-
-        try {
-            Object base = parser.parse(new FileReader("/home/lp-ub-14/NetBeansProjects/catalogo/contenido/v2b.json"));
-            JSONObject jsonBase = (JSONObject) base;
-
-            JSONArray lst_etiquetas = (JSONArray) jsonBase.get("Etiquetas");
-            for (Object para_columna : lst_etiquetas) {
-                etiquetas_para_columna.add((String) para_columna);
-            }
-            JSONArray lst_articulos = (JSONArray) jsonBase.get("v2b");// lista de objetosJSON
-            for (Object articulo : lst_articulos) {
-                JSONObject Articulo = (JSONObject) articulo;// un objeto
-                //Etiquetas [x]
-                JSONArray Etiquetas = (JSONArray) Articulo.get("Etiquetas");
-                for (Object etiquetas : Etiquetas) {
-
-                    String Etiqueta = (String) etiquetas;
-                    if (Etiqueta.equalsIgnoreCase(etiqueta)) {
-
-                        //Titulo
-                        Titulo = (String) Articulo.get("Titulo");
-
-                        //Sinopsis
-                        Sinopsis = (String) Articulo.get("Sinopsis");
-
-                        //Imagen
-                        Imagen = (String) Articulo.get("Imagen");
-
-                        //Formadores [x]
-                        JSONArray Formadores = (JSONArray) Articulo.get("Formadores");
-                        for (Object formadores : Formadores) {
-
-                            Autores.add((String) formadores);
-                        }
-                        //Fecha de publicacion
-                        Fecha_de_publicacion = (String) Articulo.get("Fecha de publicacion");
-
-                        //Duracion
-                        Duracion = (String) Articulo.get("Duracion");
-
-                        //Enlaces [x]
-                        JSONArray Enlaces = (JSONArray) Articulo.get("Enlaces");
-                        for (Object enlaces : Enlaces) {
-
-                            links.add((String) enlaces);
-                        }
-                        contenido += crearArticulo(Imagen, Titulo, Sinopsis,
-                                Autores, Fecha_de_publicacion, Duracion, links);
-                    }//cierra if que verifica las etiquetas
-                }// cierra ek for que obtiene las etiquetas
-            }// cierra el for que obtienelos articulos
-
-        } catch (ParseException e) {
-            System.out.println("ERROR EN EL PARSER DE JSON");
-        } catch (IOException e) {
-            System.out.println("ERROS AL ABRIR EL ARCHIVO");
-        }
-
-        return contenido;
-    }
-
-    private void eleccindeArchivoDatos(String DlstMenu) {
-
-    }
-
-    private String crearArticulo(
-            String Imagen, String Titulo, String Sinopsis,
-            ArrayList<String> autores, String Fecha_de_publicacion, String Duracion,
-            ArrayList<String> links) {
-        class secciones {
-
-            private String autores(ArrayList<String> lstautores) {
-                String autores = "";
-                for (String autor : lstautores) {
-                    autores += autor + ", ";
-                }
-                return autores;
-            }
-        }
-        secciones sc = new secciones();
-        String articulo = "";
-        articulo = "<article>\n"
-                + "                    <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n"
-                + "                        <caption><h1>" + Titulo + "</h1></caption>\n"
-                + "                        <tr>\n"
-                + "                           <td>\n"
-                + "                                <figure>                               \n"
-                + "                                    <img class =\"grande\" src=\"" + Imagen + "\" />\n"
-                + "                                </figure>\n"
-                + "                           </td>\n"
-                + "                           <td> <p>\n"
-                + Sinopsis
-                + "                              </p>\n"
-                + "                              <br>\n"
-                + "                              Formadores: " + sc.autores(autores) + "<br>\n"
-                + "                              Fecha de publicación: " + Fecha_de_publicacion + "<br>\n"
-                + "                              Duración: " + Duracion + "<br><br>\n"
-                + "                              \n"
-                + "                              <a href=\"\">Carpeta</a><br>\n"
-                + "                              <a href=\"\">rar</a>\n"
-                + "                           </td>\n"
-                + "                        </tr>\n"
-                + "                    </table>\n"
-                + "                </article>";
-
-        return articulo;
     }
 
 // Se usara para leer el archivo que contenga la direccion a los catalogos en formato Json
