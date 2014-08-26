@@ -30,7 +30,8 @@ import org.json.simple.parser.ParseException;
  * @author lp-ub-14
  */
 public class catalogo extends HttpServlet {
-LeerJson a = new LeerJson("hola");
+
+    LeerJson aLeerJson = new LeerJson();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -78,17 +79,14 @@ LeerJson a = new LeerJson("hola");
             );
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-            out.println(getlstcatalogos_paraEl_Menu(path_de_catalogos));
-            out.println("<br>"+a.getTitulo());
-//            articulos=contenido(menu ,columna);
-//            articulos = leerJson("web");
+
+            out.println(articulo(menu, columna, path_de_catalogos));
             out.println("</section>");
             out.println("<aside id=\"columna\">");
             // AQUI VA LA COLUMNA
 
-            if (menu.equalsIgnoreCase("V2B")) {
-                out.println(columnaParaV2B());
-            }
+            out.println(columna(menu, path_de_catalogos));
+
             out.println("</aside>");
             out.println(
                     "<footer id=\"pie\">\n"
@@ -220,6 +218,41 @@ LeerJson a = new LeerJson("hola");
         return Catalogos;
     }
 
+    private String columna(String menu, String path_de_catalogos) {
+        String datos = "";
+        if (verificar_path_de_catalogos(path_de_catalogos)) {
+
+            String path = path_de_catalogos + "/" + menu + ".json";
+            aLeerJson.leer("todo", path);
+            ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
+            for (String string : Etiquetas_para_columna) {
+
+                String links = ""
+                        + "<blockquote><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></blockquote>\n";
+                datos += links;
+            }
+        } else {
+            datos = "directorio de catalogos no encontrado";
+        }
+
+        return datos;
+    }
+
+    private String articulo(String menu, String columna, String path_de_catalogos) {
+        String datos = "";
+        String etiqueta = columna;
+        if (verificar_path_de_catalogos(path_de_catalogos)) {
+
+            String path = path_de_catalogos + "/" + menu + ".json";
+            aLeerJson.leer(etiqueta, path);
+            datos = aLeerJson.getContenido();
+        } else {
+            datos = "directorio de catalogos no encontrado";
+        }
+
+        return datos;
+    }
+
     private String contenido(String menu, String columna) {
 
         String contenido = "";
@@ -248,7 +281,7 @@ LeerJson a = new LeerJson("hola");
     }
 
     private String leerJson(String etiqueta) {
-        
+
         String contenido = "";
         String Titulo = "", Sinopsis = "", Imagen = "",
                 Fecha_de_publicacion = "", Duracion = "";
@@ -262,7 +295,7 @@ LeerJson a = new LeerJson("hola");
         try {
             Object base = parser.parse(new FileReader("/home/lp-ub-14/NetBeansProjects/catalogo/contenido/v2b.json"));
             JSONObject jsonBase = (JSONObject) base;
-            
+
             JSONArray lst_etiquetas = (JSONArray) jsonBase.get("Etiquetas");
             for (Object para_columna : lst_etiquetas) {
                 etiquetas_para_columna.add((String) para_columna);
@@ -366,16 +399,7 @@ LeerJson a = new LeerJson("hola");
         return articulo;
     }
 
-    private String columnaParaV2B() {
-        String links = ""
-                + "<blockquote><a href=\"./catalogo?menu=V2B&columna=todo\">Todo</a></blockquote>\n"
-                + "<blockquote><a href=\"./catalogo?menu=V2B&columna=Programacion\">Programacion</a></blockquote>\n"
-                + "<blockquote><a href=\"./catalogo?menu=V2B&columna=Web\">Web</a></blockquote>\n";
-
-        return links;
-    }
 // Se usara para leer el archivo que contenga la direccion a los catalogos en formato Json
-
     public String leerArchivo(String path) {
 //        String path = "/home/lp-ub-14/Documentos/arhpru/a.txt";
         String s = "";
