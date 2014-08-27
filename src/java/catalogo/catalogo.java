@@ -42,8 +42,14 @@ public class catalogo extends HttpServlet {
             String menu = request.getParameter("menu");
             String columna = request.getParameter("columna");
             String articulos = "nada";
+            
             //para el path_de_catalogos
             String path_catalogos = getServletConfig().getServletContext().getRealPath("/");
+            /*
+             lee el archivo que se encuentra en el servidor.
+             En el archivo seencuentra una direccion local que indica la direccion 
+             de la carpeta de mis catalogos JSON.
+             */
             String path_de_catalogos = leerArchivo(path_catalogos + "/path_de_catalogos.txt");
             /*
             
@@ -79,7 +85,10 @@ public class catalogo extends HttpServlet {
             );
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-
+            out.println("path_catalogos:  " + path_catalogos + "<br>");
+            out.println("path_de_catalogos:  " + path_de_catalogos + "<br>");
+            out.println("<a href=\"/prueba/index.html\" TARGET=\"Ventana-2\">prueba/index</a>");
+            out.println("<a href=\"/prueba/html.pdf\" TARGET=\"Ventana-2\">pdf</a>");
             out.println(articulo(menu, columna, path_de_catalogos));
             out.println("</section>");
             out.println("<aside id=\"columna\">");
