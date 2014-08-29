@@ -43,7 +43,7 @@ public class catalogo extends HttpServlet {
             String columna = request.getParameter("columna");
             String articulos = "nada";
             
-            /*
+            /*path_catalogos
             Me devuelve un String con la direccion de estes peoyecto. 
             
             Asi puedo localizar el archivo path_de_catalogos.txt
@@ -64,7 +64,7 @@ public class catalogo extends HttpServlet {
              lista de menu ---> lista de los catalogos
             
              */
-
+            
             /* TODO output your page here. You may use following sample code. */
             out.println(
                     "<!DOCTYPE html>\n"
@@ -87,7 +87,7 @@ public class catalogo extends HttpServlet {
                     "<nav id=\"menu\">\n"
                     + "                <ul>\n"
                     + "                     <li><a href=\"./catalogo?menu=principal\">principal</a></li>"
-                    + menu(path_de_catalogos)
+                    + menu(menu, columna, path_de_catalogos)
                     + "                </ul>\n"
                     + "            </nav>"
             );
@@ -97,12 +97,12 @@ public class catalogo extends HttpServlet {
             out.println("path_de_catalogos:  " + path_de_catalogos + "<br>");
             out.println("<a href=\"/prueba/index.html\" TARGET=\"Ventana-2\">prueba/index</a>");
             out.println("<a href=\"/prueba/html.pdf\" TARGET=\"Ventana-2\">pdf</a>");
-            out.println(articulo(menu, columna, path_de_catalogos));
+            out.println(articulo());
             out.println("</section>");
             out.println("<aside id=\"columna\">");
             // AQUI VA LA COLUMNA
 
-            out.println(columna(menu, path_de_catalogos));
+            out.println(columna(menu));
 
             out.println("</aside>");
             out.println(
@@ -199,7 +199,7 @@ public class catalogo extends HttpServlet {
         return Catalogos;
     }
 
-    private String menu(String path_de_catalogos) {
+    private String menu(String varmenu, String varcolumna, String path_de_catalogos) {
         //recibe la carpeta donde se encuentran los archivos JSON
         class Comprobar {
 
@@ -220,9 +220,12 @@ public class catalogo extends HttpServlet {
         Comprobar comprobar = new Comprobar();
         String menu = "";
 
-        ArrayList<String> Catalogos = getcatalogos(path_de_catalogos);
 
         if (verificar_path_de_catalogos(path_de_catalogos)) {
+            String path = path_de_catalogos + "/" + varmenu + ".json";
+            aLeerJson.leer(varcolumna, path);
+            
+            ArrayList<String> Catalogos = getcatalogos(path_de_catalogos);
             for (String fichero : Catalogos) {
                 String mmenu = comprobar.quitarExtenciones(fichero);
                 menu += "<li><a href=\"./catalogo?menu=" + mmenu + "&columna=todo\">"
@@ -232,15 +235,12 @@ public class catalogo extends HttpServlet {
         } else {
             menu = "NO se encontro la carpeta catalogos";
         }
+        
         return menu;
     }
 
-    private String columna(String menu, String path_de_catalogos) {
+    private String columna(String menu) {
         String datos = "";
-        if (verificar_path_de_catalogos(path_de_catalogos)) {
-
-            String path = path_de_catalogos + "/" + menu + ".json";
-            aLeerJson.leer("todo", path);
             ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
             for (String string : Etiquetas_para_columna) {
 
@@ -248,25 +248,12 @@ public class catalogo extends HttpServlet {
                         + "<blockquote><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></blockquote>\n";
                 datos += links;
             }
-        } else {
-            datos = "directorio de catalogos no encontrado";
-        }
-
         return datos;
     }
 
-    private String articulo(String menu, String columna, String path_de_catalogos) {
-        String datos = "";
-        String etiqueta = columna;
-        if (verificar_path_de_catalogos(path_de_catalogos)) {
-
-            String path = path_de_catalogos + "/" + menu + ".json";
-            aLeerJson.leer(etiqueta, path);
-            datos = aLeerJson.getArticulo();
-        } else {
-            datos = "directorio de catalogos no encontrado";
-        }
-
+    private String articulo() {
+        String datos;
+            datos = aLeerJson.crearArticulo();
         return datos;
     }
 
