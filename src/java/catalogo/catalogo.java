@@ -43,7 +43,15 @@ public class catalogo extends HttpServlet {
             String columna = request.getParameter("columna");
             String articulos = "nada";
             
-            //para el path_de_catalogos
+            /*
+            Me devuelve un String con la direccion de estes peoyecto. 
+            
+            Asi puedo localizar el archivo path_de_catalogos.txt
+            que se localiza en la carpeta web de este proyecto (/web/path_de_catalogos.txt)
+            
+            path_de_catalogos.txt Contiene la direccion a la carpeta "catalogos"
+            que contienen los catalogos en formato JSON
+            */
             String path_catalogos = getServletConfig().getServletContext().getRealPath("/");
             /*
              lee el archivo que se encuentra en el servidor.
