@@ -96,7 +96,7 @@ public class LeerJson {
                         articulos.add(objArt);// El objecot articulo lo inserto en una lista
                     }//cierra if que verifica las etiquetas
                 }// cierra el for que obtiene las etiquetas
-                
+
                 i = 0;
 
             }// cierra el for que obtienelos articulos
@@ -113,14 +113,16 @@ public class LeerJson {
 
             private String autores(ArrayList<String> lstautores) {
                 String autores = "";
-                for (String autor : lstautores) {
-                    autores += autor + ", ";
+                if (!lstautores.get(0).equalsIgnoreCase("")) {
+                    for (String autor : lstautores) {
+                        autores += autor + ", ";
+                    }
                 }
                 return autores;
             }
 
             private String links(ArrayList<Links> links) {
-                String datos = "";
+                String datos = "<br>";
                 for (Links links1 : links) {
                     datos += "<a href=\"" + links1.getPath() + "\" TARGET=\"Ventana-2\">" + links1.getNombre() + "</a><br>";
                 }
@@ -131,8 +133,23 @@ public class LeerJson {
         String articulo = "";
         secciones sc = new secciones();
         for (Articulo articulos1 : articulos) {
+            String tmp_autores = sc.autores(articulos1.getAutores());
+            String autores="";
+            if(!tmp_autores.equalsIgnoreCase("")){
+                autores = "Autore: "+tmp_autores+"<br>";
+            }
+            String tmp_Fecha_de_publicación = articulos1.getFecha();
+            String fecha_de_publicación="";
+            if(!tmp_Fecha_de_publicación.equalsIgnoreCase("")){
+                fecha_de_publicación = "Fecha de publicación: "+tmp_Fecha_de_publicación+"<br>";
+            }
+            String tmp_Duracion = articulos1.getDuracion();
+            String duracion="";
+            if(!tmp_Duracion.equalsIgnoreCase("")){
+                duracion = "Duración: "+tmp_Duracion+"<br>";
+            }
             articulo += "<article>\n"
-                    + "                    <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n"
+                    + "                    <table border=\"0\" cellspacing=\"15\" cellpadding=\"0\">\n"
                     + "                        <caption><h1>" + articulos1.getTitulo() + "</h1></caption>\n"
                     + "                        <tr>\n"
                     + "                           <td>\n"
@@ -141,16 +158,16 @@ public class LeerJson {
                     + "                                </figure>\n"
                     + "                           </td>\n"
                     + "                           <td> <p>\n"
-                    + articulos1.getSinopsis()
+                    +                                articulos1.getSinopsis()
                     + "                              </p>\n"
                     + "                              <br>\n"
-                    + "                              Autores: " + sc.autores(articulos1.getAutores()) + "<br>\n"
-                    + "                              Fecha de publicación: " + articulos1.getFecha() + "<br>\n"
-                    + "                              Duración: " + articulos1.getDuracion() + "<br><br>\n"
-                    + sc.links(articulos1.getLinks())
+                    +                                autores
+                    +                                fecha_de_publicación
+                    +                                duracion
+                    +                                sc.links(articulos1.getLinks())
                     + "                           </td>\n"
                     + "                        </tr>\n"
-                    + "                    </table>\n"
+                    + "                    </table><br><br>\n"
                     + "                </article>";
         }
 

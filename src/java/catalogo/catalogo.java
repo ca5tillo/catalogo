@@ -52,13 +52,13 @@ public class catalogo extends HttpServlet {
             path_de_catalogos.txt Contiene la direccion a la carpeta "catalogos"
             que contienen los catalogos en formato JSON
             */
-            String path_catalogos = getServletConfig().getServletContext().getRealPath("/");
+            String path_proyecto = getServletConfig().getServletContext().getRealPath("/");
             /*
              lee el archivo que se encuentra en el servidor.
              En el archivo seencuentra una direccion local que indica la direccion 
              de la carpeta de mis catalogos JSON.
              */
-            String path_de_catalogos = leerArchivo(path_catalogos + "/path_de_catalogos.txt");
+            String path_de_catalogos = leerArchivo(path_proyecto + "/path_de_catalogos.txt");
             /*
             
              lista de menu ---> lista de los catalogos
@@ -93,10 +93,8 @@ public class catalogo extends HttpServlet {
             );
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-            out.println("path_catalogos:  " + path_catalogos + "<br>");
+            out.println("path_proyecto:  " + path_proyecto + "<br>");
             out.println("path_de_catalogos:  " + path_de_catalogos + "<br>");
-            out.println("<a href=\"/prueba/index.html\" TARGET=\"Ventana-2\">prueba/index</a>");
-            out.println("<a href=\"/prueba/html.pdf\" TARGET=\"Ventana-2\">pdf</a>");
             out.println(articulo());
             out.println("</section>");
             out.println("<aside id=\"columna\">");
@@ -164,10 +162,10 @@ public class catalogo extends HttpServlet {
         Pattern pat = Pattern.compile(".*~");
         Matcher mat = pat.matcher(dato);
         if (mat.matches()) {
-            System.out.println("SI");
+            
             a = true;
         } else {
-            System.out.println("NO");
+            
         }
         return a;
     }
