@@ -134,19 +134,24 @@ public class LeerJson {
         secciones sc = new secciones();
         for (Articulo articulos1 : articulos) {
             String tmp_autores = sc.autores(articulos1.getAutores());
-            String autores="";
-            if(!tmp_autores.equalsIgnoreCase("")){
-                autores = "Autore: "+tmp_autores+"<br>";
+            String autores = "";
+            if (!tmp_autores.equalsIgnoreCase("")) {
+                autores = "Autore: " + tmp_autores + "<br>";
             }
             String tmp_Fecha_de_publicación = articulos1.getFecha();
-            String fecha_de_publicación="";
-            if(!tmp_Fecha_de_publicación.equalsIgnoreCase("")){
-                fecha_de_publicación = "Fecha de publicación: "+tmp_Fecha_de_publicación+"<br>";
+            String fecha_de_publicación = "";
+            if (!tmp_Fecha_de_publicación.equalsIgnoreCase("")) {
+                fecha_de_publicación = "Fecha de publicación: " + tmp_Fecha_de_publicación + "<br>";
             }
             String tmp_Duracion = articulos1.getDuracion();
-            String duracion="";
-            if(!tmp_Duracion.equalsIgnoreCase("")){
-                duracion = "Duración: "+tmp_Duracion+"<br>";
+            String duracion = "";
+            if (!tmp_Duracion.equalsIgnoreCase("")) {
+                duracion = "Duración: " + tmp_Duracion + "<br>";
+            }
+            String pathImg = articulos1.getImagen();
+            String img = "";
+            if (!pathImg.equalsIgnoreCase("")) {
+                img = "<img class =\"grande\" src=\"" + pathImg + "\" />";
             }
             articulo += "<article>\n"
                     + "                    <table border=\"0\" cellspacing=\"15\" cellpadding=\"0\">\n"
@@ -154,17 +159,17 @@ public class LeerJson {
                     + "                        <tr>\n"
                     + "                           <td>\n"
                     + "                                <figure>                               \n"
-                    + "                                    <img class =\"grande\" src=\"" + articulos1.getImagen() + "\" />\n"
+                    +                                       img
                     + "                                </figure>\n"
                     + "                           </td>\n"
                     + "                           <td> <p>\n"
-                    +                                articulos1.getSinopsis()
+                    + articulos1.getSinopsis()
                     + "                              </p>\n"
                     + "                              <br>\n"
-                    +                                autores
-                    +                                fecha_de_publicación
-                    +                                duracion
-                    +                                sc.links(articulos1.getLinks())
+                    + autores
+                    + fecha_de_publicación
+                    + duracion
+                    + sc.links(articulos1.getLinks())
                     + "                           </td>\n"
                     + "                        </tr>\n"
                     + "                    </table><br><br>\n"
