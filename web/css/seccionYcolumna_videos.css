@@ -8,16 +8,16 @@
     float: right;
     width: 270px;
     margin: 80px 10px 20px 0px;
-    background: #CCCCCC;
+    background: #888a85;
 }
 #columna a{
-    background-color:#888a85;
+    background-color:#cccccc;
     color:#000;
     text-decoration:none;
-    margin:25px 20px;
+    margin:10px 20px;
     padding:30px 15px;
     display:block;
 }
 #columna a:hover{
-    background-color:#555753;
+    background-color:#888a85;
 }

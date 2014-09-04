@@ -1,23 +1,23 @@
 #seccion {
-float: left;
-width: 720px;
-margin: 80px 20px 20px 10px;
+    float: left;
+    width: 720px;
+    margin: 80px 20px 20px 10px;
 }
 #columna {
-float: right;
-width: 200px;
-margin: 80px 10px 20px 0px;
-padding: 0px;
-background: #888a85;
+    float: right;
+    width: 200px;
+    margin: 80px 10px 20px 0px;
+    padding: 0px;
+    background: #888a85;
 }
 #columna a{
-                        background-color:#cccccc;
-                        color:#000;
-                        text-decoration:none;
-                        margin:10px;
-                        padding:10px ;
-                        display:block;
-                      }
-                      #columna a:hover{
-                        background-color:#888a85;
-                      }
+    background-color:#cccccc;
+    color:#000;
+    text-decoration:none;
+    margin:10px;
+    padding:10px ;
+    display:block;
+}
+#columna a:hover{
+    background-color:#888a85;
+}

@@ -18,12 +18,21 @@ public class Articulo {
     private String titulo = "";
     private String subtitulo = "";
     private String sinopsis = "";
+    private String idioma = "";
     private ArrayList<String> autores = new ArrayList<>();
     private String fecha = "";
     private String duracion = "";
     private ArrayList<Links> links = new ArrayList<>();
 
     public Articulo() {
+    }
+
+    public String getIdioma() {
+        return idioma;
+    }
+
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
     public String getSubtitulo() {

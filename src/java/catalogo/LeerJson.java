@@ -64,11 +64,12 @@ public class LeerJson {
                         seccion = varmenu;
                         //Titulo
                         objArt.setTitulo((String) Articulo.get("Titulo"));
-                        // subtilutl
-                        objArt.setSubtitulo("algo");
+                        // subtitulo
+//                        objArt.setSubtitulo((String) Articulo.get("Subtitulo"));
                         //Sinopsis
                         objArt.setSinopsis((String) Articulo.get("Sinopsis"));
-
+                        // idioma
+//                        objArt.setIdioma((String) Articulo.get("Idioma"));
                         //Imagen
                         objArt.setImagen((String) Articulo.get("Imagen"));// direccion de la imagen 
 
@@ -135,7 +136,19 @@ public class LeerJson {
     }
 
     public String crearContenido() {
+        String articulo = "";
 
+        if (seccion.equalsIgnoreCase("videos")) {
+            articulo = contenidoVideos();
+        } else if (seccion.equalsIgnoreCase("libros")) {
+            articulo = contenidoLibros();
+        } else {
+            articulo = contenidoVarios();
+        }
+        return articulo;
+    }
+
+    private String contenidoVarios() {
         String articulo = "";
         for (Articulo articulos1 : articulos) {
             String tmp_autores = autores(articulos1.getAutores());
@@ -180,9 +193,6 @@ public class LeerJson {
                     + "                    </table><br><br>\n"
                     + "                </article>";
         }
-if (seccion.equalsIgnoreCase("videos")){
-    articulo=contenidoVideos();
-}
         return articulo;
     }
 
@@ -193,7 +203,7 @@ if (seccion.equalsIgnoreCase("videos")){
                 String datos = "<br>";
                 for (Links links1 : links) {
 
-                    datos += "<a href=\"" + links1.getPath() + "\"  target=\"videos\"> " + links1.getNombre() + " </a>";
+                    datos += "<h2><a href=\"" + links1.getPath() + "\"  target=\"videos\"> " + links1.getNombre() + " </a></h2>";
                 }
 
                 return datos;
@@ -206,11 +216,77 @@ if (seccion.equalsIgnoreCase("videos")){
             /*
              <a href="a.mp4"  target="videos">  </a>
              */
-            videos += ln.links(articulos1.getLinks()); 
-                    
+            videos += ln.links(articulos1.getLinks());
+
         }
 
         return videos;
+    }
+//    private String contenidoVideos() {
+//        class Ln {
+//
+//            private String links(ArrayList<Links> links) {
+//                String datos = "<br>";
+//                for (Links links1 : links) {
+//                    datos +=  "<tr>"
+//                            + "   <td>"
+//                            + "      <a href=\"" + links1.getPath() + "\"><h1>" + links1.getNombre() + "</h1></a>"
+//                            + "   </td>"
+//                            + "</tr>";
+//
+//                }
+//
+//                return datos;
+//            }
+//        }
+//        Ln ln = new Ln();
+//        String videos = "<table>";
+//        for (Articulo articulos1 : articulos) {
+//
+//            /*
+//             <a href="a.mp4"  target="videos">  </a>
+//             */
+//            videos += ln.links(articulos1.getLinks());
+//
+//        }
+//        videos += "</table>";
+//        return videos;
+//    }
+
+    private String contenidoLibros() {
+        String libros = "<div id=\"portada\">\n"
+                + "            <img src=\"iconos/portada.png\" >\n"
+                + "         </div>\n"
+                + "         <div id= \"tablaLibros\">\n"
+                + "            <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
+        class Ln {
+
+            private String links(ArrayList<Links> links) {
+                String datos = "<br>";
+                for (Links links1 : links) {
+
+                    datos += "<tr>"
+                            + "                  <td>"
+                            + "                     <a href=\"\"><img src=\"iconos/libro.png\" width=\"42\" height=\"42\"></a>\n"
+                            + "                  </td>"
+                            + "                  <td>"
+                            + "                     <a href=\"" + links1.getPath() + "\"><h1>" + links1.getNombre() + "</h1></a>"
+                            + "                  </td>"
+                            + "               </tr>";
+                }
+
+                return datos;
+            }
+        }
+        Ln ln = new Ln();
+
+        for (Articulo articulos1 : articulos) {
+
+            libros += ln.links(articulos1.getLinks());
+
+        }
+        libros += "</table></div>";
+        return libros;
     }
 
     public ArrayList<String> getEtiquetas_para_columna() {
