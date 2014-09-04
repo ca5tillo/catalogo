@@ -1,0 +1,44 @@
+body {color:#333;font: 12px Verdana;background:#000;}
+.pelicula {
+		background: none repeat scroll 0 0 #333333;
+		border-radius: 10px 10px 10px 10px;
+		float: left;
+		height: 508px;
+		margin: 0 3px 3px !important;
+		padding: 6px;
+		position: relative;
+		width: 204px;
+		text-align:center;
+		
+}
+.categorias {
+		line-height: 10px;
+		padding: 0 10px 10px;
+}
+
+.poster {
+		width: 204px;
+}
+.poster img , #portadas img {
+		height: 267px;
+		width: 196px;
+}
+.poster h2{
+		background: none repeat scroll 0 0 #333333;
+		color: #555555;
+		display: block;
+		font-size: 12px;
+		height: 40px;
+		line-height: 20px;
+		margin: 3px -3px -3px;
+		text-align: center;
+		text-decoration: none;
+		text-shadow: 1px 1px #FFFFFF;
+}
+.poster h2 a:link, .poster h2 a:visited{
+		color: #54A4DE;
+		font-size: 12px;
+		font-weight: bold;
+		text-decoration: none;
+		text-shadow: 1px 1px 0 #000000;
+}

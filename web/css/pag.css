@@ -1,0 +1,86 @@
+* {
+    margin: 0px;
+    padding: 0px;
+
+}
+h1 {
+    font: bold 20px verdana, sans-serif;
+}
+h2 {
+    font: bold 14px verdana, sans-serif;
+}
+header, section, footer, aside, article, figcaption,
+hgroup{
+    display: block;
+}
+body {
+    text-align: center;
+    background:#000;
+}
+
+/*cabecera menu*/
+#menu{
+    height: 50px;
+    background: #000;
+    box-shadow: 0 0 5px #333333;/*sombra */
+    -moz-box-shadow: 0 0 5px #333333;
+    -webkit-box-shadow: 0 0 5px #333333;
+    z-index: 99999; /*orden de las capas. Esta capa permanecera encima */
+    position: fixed;
+    width: 100%;
+}
+ul, ol{
+    list-style:none;
+}
+.nav li a {
+    background-color:#000;
+    color:#d3d7cf;
+    text-decoration:none;
+    padding:15px 15px;
+    display:block;
+}
+.nav li a:hover{
+    background-color:#f57900;
+
+}
+.nav > li {
+    float:left;
+}
+.nav li ul {
+    display:none;
+    position:absolute;
+    min-width:140px;
+}
+.nav li:hover > ul {
+    display:block;
+}
+.nav li ul li {
+    position:relative;
+}
+.nav li ul li ul {
+    right:-140px;
+    top:0px;
+}
+header #buscar{
+    float:right;
+    padding:15px 15px;
+}
+
+/**/
+
+#principal {
+    background:#fff;
+    width: 960px;
+    margin: 0px auto;
+    text-align: justify;
+}
+#portada{
+    text-align: center;
+}
+
+#pie {
+    clear: both;
+    text-align: center;
+    padding: 20px;
+    border-top: 2px solid #999999;
+}

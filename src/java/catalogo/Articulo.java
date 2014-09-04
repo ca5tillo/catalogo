@@ -13,8 +13,18 @@ import java.util.ArrayList;
  * @author lp-ub-14
  */
 public class Articulo {
+    private String seccion = "";
     private String imagen ="";
     private String titulo="";
+    private String subtitulo="";
+
+    public String getSubtitulo() {
+        return subtitulo;
+    }
+
+    public void setSubtitulo(String subtitulo) {
+        this.subtitulo = subtitulo;
+    }
     private String sinopsis="";
     private ArrayList<String> autores = new ArrayList<>();
     private String fecha="";
@@ -22,6 +32,14 @@ public class Articulo {
     private ArrayList<Links> links = new ArrayList<>();
 
     public Articulo() {
+    }
+
+    public String getSeccion() {
+        return seccion;
+    }
+
+    public void setSeccion(String seccion) {
+        this.seccion = seccion;
     }
 
     public String getImagen() {

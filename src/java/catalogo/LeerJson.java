@@ -21,11 +21,12 @@ public class LeerJson {
 
     private ArrayList<Articulo> articulos = new ArrayList<>();
     private ArrayList<String> etiquetas_para_columna = new ArrayList<String>();
+    private String seccion;
 
     public LeerJson() {
     }
 
-    public void leer(String etiqueta, String path) {
+    public void leer(String etiqueta, String path, String varmenu) {
         //"/home/lp-ub-14/NetBeansProjects/catalogo/contenido/v2b.json"
         etiquetas_para_columna.clear();
         articulos.clear();
@@ -56,6 +57,9 @@ public class LeerJson {
                     if ((Etiqueta.equalsIgnoreCase(etiqueta)
                             || etiqueta.equalsIgnoreCase("todo")) && i == 0) {
                         i = 1;
+                        //seccion 
+                        objArt.setSeccion(varmenu);
+                        seccion = varmenu;
                         //Titulo
                         objArt.setTitulo((String) Articulo.get("Titulo"));
 
@@ -159,7 +163,7 @@ public class LeerJson {
                     + "                        <tr>\n"
                     + "                           <td>\n"
                     + "                                <figure>                               \n"
-                    +                                       img
+                    + img
                     + "                                </figure>\n"
                     + "                           </td>\n"
                     + "                           <td> <p>\n"
@@ -183,4 +187,7 @@ public class LeerJson {
         return etiquetas_para_columna;
     }
 
+    public String obtenerSeccion() {
+        return seccion;
+    }
 }

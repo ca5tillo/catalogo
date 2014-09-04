@@ -38,20 +38,20 @@ public class catalogo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-
+            String header = "";
             String menu = request.getParameter("menu");
             String columna = request.getParameter("columna");
             String articulos = "nada";
-            
+
             /*path_catalogos
-            Me devuelve un String con la direccion de estes peoyecto. 
+             Me devuelve un String con la direccion de estes peoyecto. 
             
-            Asi puedo localizar el archivo path_de_catalogos.txt
-            que se localiza en la carpeta web de este proyecto (/web/path_de_catalogos.txt)
+             Asi puedo localizar el archivo path_de_catalogos.txt
+             que se localiza en la carpeta web de este proyecto (/web/path_de_catalogos.txt)
             
-            path_de_catalogos.txt Contiene la direccion a la carpeta "catalogos"
-            que contienen los catalogos en formato JSON
-            */
+             path_de_catalogos.txt Contiene la direccion a la carpeta "catalogos"
+             que contienen los catalogos en formato JSON
+             */
             String path_proyecto = getServletConfig().getServletContext().getRealPath("/");
             /*
              lee el archivo que se encuentra en el servidor.
@@ -64,37 +64,44 @@ public class catalogo extends HttpServlet {
              lista de menu ---> lista de los catalogos
             
              */
-            
+            header = menu(menu, columna, path_de_catalogos);
             /* TODO output your page here. You may use following sample code. */
+            String seccionYcolumna = "";
+            if (obteneSeccion().equalsIgnoreCase("videos")) {
+                seccionYcolumna = "<link rel=\"stylesheet\" href=\"css/seccionYcolumna_videos.css\">";
+            } else {
+                seccionYcolumna = "<link rel=\"stylesheet\" href=\"css/seccionYcolumna_sencillo.css\">";
+            }
             out.println(
-                    "<!DOCTYPE html>\n"
-                    + "<html lang=\"es\">\n"
-                    + "    <head>\n"
-                    + "        <meta charset=\"UTF-8\">\n"
-                    + "        <meta name=\"description\" content=\"Ejemplo de HTML5\">\n"
-                    + "        <meta name=\"keywords\" content=\"HTML5, CSS3, JavaScript\">\n"
-                    + "        <title>Catálogo</title>\n"
-                    + "        <link rel=\"stylesheet\" href=\"misestilos.css\">\n"
+                    "<!DOCTYPE html>"
+                    + "<html lang=\"es\">"
+                    + "    <head>"
+                    + "        <meta charset=\"UTF-8\">"
+                    + "        <meta name=\"description\" content=\"Ejemplo de HTML5\">"
+                    + "        <meta name=\"keywords\" content=\"HTML5, CSS3, JavaScript\">"
+                    + "        <title>Catálogo</title>"
+                    + "        <link href='iconos/a.ico' rel='shortcut icon'/>"
+                    + "        <link rel=\"stylesheet\" href=\"css/pag.css\">"
+                       +"<link rel=\"stylesheet\" href=\"css/seccionYcolumna_sencillo.css\">"     
+                    + seccionYcolumna
+                    + "        <link rel=\"stylesheet\" href=\"css/posterpelicula.css\">"
+                    + "        <link rel=\"stylesheet\" href=\"css/tablas.css\">"
                     + "    </head>"
             );
             out.println("<body>");
-            out.println("<div id=\"agrupar\">");
-            out.println("<header id=\"cabecera\">\n"
-                    + "                <h1>" + menu + "</h1>\n"
-                    + "            </header>"
-            );
             out.println(
-                    "<nav id=\"menu\">\n"
-                    + "                <ul>\n"
-                    + "                     <li><a href=\"./catalogo?menu=principal\">principal</a></li>"
-                    + menu(menu, columna, path_de_catalogos)
-                    + "                </ul>\n"
-                    + "            </nav>"
+                    "<header id=\"menu\">"
+                    + "     <ul class=\"nav\">"
+                    + "          <li><a href=\"\" style= \"padding: 5px\"><img src=\"iconos/a.ico\" width=\"37\" height=\"35\"></a></li>"
+                    + header
+                    + "      </ul>\n"
+                    + "</header>"
             );
+            out.println("<div id=\"principal\">");
+            
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-            out.println("path_proyecto:  " + path_proyecto + "<br>");
-            out.println("path_de_catalogos:  " + path_de_catalogos + "<br>");
+            out.println(obteneSeccion());
             out.println(articulo());
             out.println("</section>");
             out.println("<aside id=\"columna\">");
@@ -162,10 +169,10 @@ public class catalogo extends HttpServlet {
         Pattern pat = Pattern.compile(".*~");
         Matcher mat = pat.matcher(dato);
         if (mat.matches()) {
-            
+
             a = true;
         } else {
-            
+
         }
         return a;
     }
@@ -217,41 +224,51 @@ public class catalogo extends HttpServlet {
         }
         Comprobar comprobar = new Comprobar();
         String menu = "";
-
+        String submenu = "";
 
         if (verificar_path_de_catalogos(path_de_catalogos)) {
-            String path = path_de_catalogos + "/" + varmenu + ".json";
-            aLeerJson.leer(varcolumna, path);
-            
+
             ArrayList<String> Catalogos = getcatalogos(path_de_catalogos);
             for (String fichero : Catalogos) {
                 String mmenu = comprobar.quitarExtenciones(fichero);
-                menu += "<li><a href=\"./catalogo?menu=" + mmenu + "&columna=todo\">"
-                        + mmenu + "</a></li>";
 
+                String pathh = path_de_catalogos + "/" + mmenu + ".json";
+                aLeerJson.leer("nada", pathh, mmenu);
+                ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
+                for (String string : Etiquetas_para_columna) {
+                    submenu += "<li><a href=\"./catalogo?menu=" + mmenu + "&columna=" + string + "\">" + string + "</a></li>";
+                }
+                menu += "<li><h2><a href=\"./catalogo?menu=" + mmenu + "&columna=todo\">"
+                        + mmenu + "</a></h2>"
+                        + "    <ul>"
+                        + submenu
+                        + "    </ul>"
+                        + "</li>";
+                submenu = "";
             }
+            String path = path_de_catalogos + "/" + varmenu + ".json";
+            aLeerJson.leer(varcolumna, path, varmenu);
         } else {
             menu = "NO se encontro la carpeta catalogos";
         }
-        
+
         return menu;
     }
-
     private String columna(String menu) {
         String datos = "";
-            ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
-            for (String string : Etiquetas_para_columna) {
+        ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
+        for (String string : Etiquetas_para_columna) {
 
-                String links = ""
-                        + "<blockquote><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></blockquote>\n";
-                datos += links;
-            }
+            String links = ""
+                    + "<blockquote><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></blockquote>\n";
+            datos += links;
+        }
         return datos;
     }
 
     private String articulo() {
         String datos;
-            datos = aLeerJson.crearArticulo();
+        datos = aLeerJson.crearArticulo();
         return datos;
     }
 
@@ -289,5 +306,10 @@ public class catalogo extends HttpServlet {
 
         return s;
     }
-
+public String obteneSeccion() {
+        String a = "";
+        a += aLeerJson.obtenerSeccion();
+        
+        return a;
+    }
 }

@@ -1,0 +1,77 @@
+
+#tablaLibros table, table td, table tr {
+	padding:0px;
+	border-spacing: 0px;
+}
+
+#tablaLibros table {
+	border:1px black solid;
+	border-radius:5px;
+	min-width:400px;
+	font-family: Helvetica,Arial;
+}
+
+#tablaLibros table td {
+	padding:6px;
+}
+
+#tablaLibros table tr:first-child td:first-child {
+	border-radius:5px 0px 0px 0px;
+}
+
+#tablaLibros table tr:first-child td:last-child {
+	border-radius:0px 5px 0px 0px;
+}
+
+#tablaLibros table tr:last-child td:first-child {
+	border-radius:0px 0px 0px 5px;
+}
+
+#tablaLibros table tr:last-child td:last-child {
+	border-radius:0px 0px 5px 0px;
+}
+
+#tablaLibros table td:not(:last-child) {
+	border-right:1px #666 solid;
+}
+
+
+#tablaLibros table tr:nth-child(2n) {
+	background: #729fcf;
+}
+
+#tablaLibros table tr:nth-child(2n+1){
+	background: #ADD8E6;
+}
+
+#tablaLibros table tr:hover {
+	background:#E0FFFF;
+}
+
+#tablaLibros table:not(.header) tr {
+	text-align: left;
+}
+
+#tablaLibros table.header tr:first-child {
+	font-weight: bold;
+	color:#fff;
+	background-color: #444;
+	border-bottom:1px #000 solid;
+	text-align:left;
+}
+
+#tablaLibros table.header tr:nth-child(n+2) {
+	text-align: right;
+}
+table {
+	border:1px black solid;
+	border-radius:5px;
+	min-width:720px;
+	font-family: Helvetica,Arial;
+}
+table td:nth-child(2) {
+	padding:10px 10px 10px 60px;
+}
+table td:nth-child(1) {
+	padding:0px;
+}
