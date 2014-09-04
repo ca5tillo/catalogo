@@ -65,6 +65,7 @@ public class catalogo extends HttpServlet {
             
              */
             header = menu(menu, columna, path_de_catalogos);
+
             /* TODO output your page here. You may use following sample code. */
             String seccionYcolumna = "";
             if (obteneSeccion().equalsIgnoreCase("videos")) {
@@ -82,13 +83,14 @@ public class catalogo extends HttpServlet {
                     + "        <title>Catálogo</title>"
                     + "        <link href='iconos/a.ico' rel='shortcut icon'/>"
                     + "        <link rel=\"stylesheet\" href=\"css/pag.css\">"
-                       +"<link rel=\"stylesheet\" href=\"css/seccionYcolumna_sencillo.css\">"     
                     + seccionYcolumna
                     + "        <link rel=\"stylesheet\" href=\"css/posterpelicula.css\">"
                     + "        <link rel=\"stylesheet\" href=\"css/tablas.css\">"
                     + "    </head>"
             );
             out.println("<body>");
+            // out.println(header);
+
             out.println(
                     "<header id=\"menu\">"
                     + "     <ul class=\"nav\">"
@@ -98,16 +100,26 @@ public class catalogo extends HttpServlet {
                     + "</header>"
             );
             out.println("<div id=\"principal\">");
-            
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-            out.println(obteneSeccion());
-            out.println(articulo());
+            out.println("<h2>Seccion  -> " + obteneSeccion() + "</h2>");
+            if (obteneSeccion().equalsIgnoreCase("videos")) {
+                out.println("<iframe src=\"iconos/inicio.jpg\" name= \"videos\"  width=\"650px\" height=\"400px\" >\n"
+                        + "                <p>Your browser does not support iframes.</p>\n"
+                        + "                </iframe> ");
+            } else {
+                out.println(articulo());
+            }
+
             out.println("</section>");
             out.println("<aside id=\"columna\">");
             // AQUI VA LA COLUMNA
-
+            if (obteneSeccion().equalsIgnoreCase("videos")) {
+                out.println(articulo());
+            } else {
+                
             out.println(columna(menu));
+            }
 
             out.println("</aside>");
             out.println(
@@ -254,13 +266,14 @@ public class catalogo extends HttpServlet {
 
         return menu;
     }
+
     private String columna(String menu) {
         String datos = "";
         ArrayList<String> Etiquetas_para_columna = aLeerJson.getEtiquetas_para_columna();
         for (String string : Etiquetas_para_columna) {
 
             String links = ""
-                    + "<blockquote><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></blockquote>\n";
+                    + "<blockquote><h2><a href=\"./catalogo?menu=" + menu + "&columna=" + string + "\">" + string + "</a></h2></blockquote>\n";
             datos += links;
         }
         return datos;
@@ -268,7 +281,7 @@ public class catalogo extends HttpServlet {
 
     private String articulo() {
         String datos;
-        datos = aLeerJson.crearArticulo();
+        datos = aLeerJson.crearContenido();
         return datos;
     }
 
@@ -306,10 +319,11 @@ public class catalogo extends HttpServlet {
 
         return s;
     }
-public String obteneSeccion() {
+
+    public String obteneSeccion() {
         String a = "";
         a += aLeerJson.obtenerSeccion();
-        
         return a;
     }
+
 }

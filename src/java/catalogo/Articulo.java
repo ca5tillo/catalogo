@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package catalogo;
 
 import java.util.ArrayList;
@@ -13,10 +12,19 @@ import java.util.ArrayList;
  * @author lp-ub-14
  */
 public class Articulo {
+
     private String seccion = "";
-    private String imagen ="";
-    private String titulo="";
-    private String subtitulo="";
+    private String imagen = "";
+    private String titulo = "";
+    private String subtitulo = "";
+    private String sinopsis = "";
+    private ArrayList<String> autores = new ArrayList<>();
+    private String fecha = "";
+    private String duracion = "";
+    private ArrayList<Links> links = new ArrayList<>();
+
+    public Articulo() {
+    }
 
     public String getSubtitulo() {
         return subtitulo;
@@ -24,14 +32,6 @@ public class Articulo {
 
     public void setSubtitulo(String subtitulo) {
         this.subtitulo = subtitulo;
-    }
-    private String sinopsis="";
-    private ArrayList<String> autores = new ArrayList<>();
-    private String fecha="";
-    private String duracion="";
-    private ArrayList<Links> links = new ArrayList<>();
-
-    public Articulo() {
     }
 
     public String getSeccion() {
@@ -97,7 +97,5 @@ public class Articulo {
     public void setLinks(ArrayList<Links> links) {
         this.links = links;
     }
-    
-    
-    
+
 }

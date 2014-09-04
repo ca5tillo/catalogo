@@ -54,7 +54,9 @@ public class LeerJson {
                 for (Object etiquetas : Etiquetas) {
 
                     String Etiqueta = (String) etiquetas;
-                    if ((Etiqueta.equalsIgnoreCase(etiqueta)
+                    if (Etiqueta.equalsIgnoreCase("nada")) {
+
+                    } else if ((Etiqueta.equalsIgnoreCase(etiqueta)
                             || etiqueta.equalsIgnoreCase("todo")) && i == 0) {
                         i = 1;
                         //seccion 
@@ -62,7 +64,8 @@ public class LeerJson {
                         seccion = varmenu;
                         //Titulo
                         objArt.setTitulo((String) Articulo.get("Titulo"));
-
+                        // subtilutl
+                        objArt.setSubtitulo("algo");
                         //Sinopsis
                         objArt.setSinopsis((String) Articulo.get("Sinopsis"));
 
@@ -112,32 +115,30 @@ public class LeerJson {
         }
     }
 
-    public String crearArticulo() {
-        class secciones {
-
-            private String autores(ArrayList<String> lstautores) {
-                String autores = "";
-                if (!lstautores.get(0).equalsIgnoreCase("")) {
-                    for (String autor : lstautores) {
-                        autores += autor + ", ";
-                    }
-                }
-                return autores;
-            }
-
-            private String links(ArrayList<Links> links) {
-                String datos = "<br>";
-                for (Links links1 : links) {
-                    datos += "<a href=\"" + links1.getPath() + "\" TARGET=\"Ventana-2\">" + links1.getNombre() + "</a><br>";
-                }
-
-                return datos;
+    private String autores(ArrayList<String> lstautores) {
+        String autores = "";
+        if (!lstautores.get(0).equalsIgnoreCase("")) {
+            for (String autor : lstautores) {
+                autores += autor + ", ";
             }
         }
+        return autores;
+    }
+
+    private String links(ArrayList<Links> links) {
+        String datos = "<br>";
+        for (Links links1 : links) {
+            datos += "<a href=\"" + links1.getPath() + "\" TARGET=\"Ventana-2\">" + links1.getNombre() + "</a><br>";
+        }
+
+        return datos;
+    }
+
+    public String crearContenido() {
+
         String articulo = "";
-        secciones sc = new secciones();
         for (Articulo articulos1 : articulos) {
-            String tmp_autores = sc.autores(articulos1.getAutores());
+            String tmp_autores = autores(articulos1.getAutores());
             String autores = "";
             if (!tmp_autores.equalsIgnoreCase("")) {
                 autores = "Autore: " + tmp_autores + "<br>";
@@ -173,14 +174,43 @@ public class LeerJson {
                     + autores
                     + fecha_de_publicación
                     + duracion
-                    + sc.links(articulos1.getLinks())
+                    + links(articulos1.getLinks())
                     + "                           </td>\n"
                     + "                        </tr>\n"
                     + "                    </table><br><br>\n"
                     + "                </article>";
         }
-
+if (seccion.equalsIgnoreCase("videos")){
+    articulo=contenidoVideos();
+}
         return articulo;
+    }
+
+    private String contenidoVideos() {
+        class Ln {
+
+            private String links(ArrayList<Links> links) {
+                String datos = "<br>";
+                for (Links links1 : links) {
+
+                    datos += "<a href=\"" + links1.getPath() + "\"  target=\"videos\"> " + links1.getNombre() + " </a>";
+                }
+
+                return datos;
+            }
+        }
+        Ln ln = new Ln();
+        String videos = "";
+        for (Articulo articulos1 : articulos) {
+
+            /*
+             <a href="a.mp4"  target="videos">  </a>
+             */
+            videos += ln.links(articulos1.getLinks()); 
+                    
+        }
+
+        return videos;
     }
 
     public ArrayList<String> getEtiquetas_para_columna() {
@@ -190,4 +220,5 @@ public class LeerJson {
     public String obtenerSeccion() {
         return seccion;
     }
+
 }
