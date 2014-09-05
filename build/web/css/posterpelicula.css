@@ -42,3 +42,25 @@ body {color:#333;font: 12px Verdana;background:#000;}
 		text-decoration: none;
 		text-shadow: 1px 1px 0 #000000;
 }
+.cp_oculta{
+    background: none repeat scroll 0 0 #888a85;
+		border-radius: 10px 10px 10px 10px;
+		float: left;
+		height: 250px;
+		margin: 0 3px 3px !important;
+		padding: 6px;
+		position: relative;
+		width: 180px;
+		text-align:center;
+}
+.cp_oculta a{
+    background-color:#cccccc;
+    color:#000;
+    text-decoration:none;
+    margin:0px;
+    padding:5px ;
+    display:block;
+}
+.cp_oculta a:hover{
+    background-color:#54A4DE;
+}

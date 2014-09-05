@@ -142,9 +142,9 @@ public class LeerJson {
             articulo = contenidoVideos();
         } else if (seccion.equalsIgnoreCase("libros")) {
             articulo = contenidoLibros();
-        } else if (seccion.equalsIgnoreCase("peliculas")){
+        } else if (seccion.equalsIgnoreCase("peliculas")) {
             articulo = contenidoPeliculas();
-        }else {
+        } else {
             articulo = contenidoVarios();
         }
         return articulo;
@@ -183,6 +183,7 @@ public class LeerJson {
                     + "                                </figure>\n"
                     + "                           </td>\n"
                     + "                           <td> <p>\n"
+                    + "<h2>"+articulos1.getSubtitulo()+"</h2><br>"
                     + articulos1.getSinopsis()
                     + "                              </p>\n"
                     + "                              <br>\n"
@@ -268,49 +269,44 @@ public class LeerJson {
             private String links(ArrayList<Links> links) {
                 String datos = "<br>";
                 for (Links links1 : links) {
-
-                    datos += "<div class=\"pelicula\" id=\"post-6828\">\n"
-                            + "	<div class=\"poster marco-sinopsis\">\n"
-                            + "		<a href=\"\">\n"
-                            + "			<img src=\"http://2.bp.blogspot.com/-MRictagtHYs/VAUeutMbHHI/AAAAAAAAIyM/8xQZETE3wb4/s1600/Como-Entrenar-A-Tu-Dragon-2-DVDRip-Subtitulado-MEGA-FireDrive-Shared.png\" alt=\"Como Entrenar A Tu Dragon 2 [DVDRip][Subtitulada][FD-SD-MG]\" />\n"
-                            + "		</a>	   		\n"
-                            + "		<div class=\"categorias\">\n"
-                            + "			<h2>\n"
-                            + "				<a href=\"\">\n"
-                            + "					Como Entrenar A Tu Dragon 2 <br>\n"
-                            + "					Audion : litino <br>\n"
-                            + "				</a>\n"
-                            + "			</h2>\n"
-                            + "		</div>\n"
-                            + "	</div>\n"
-                            + "</div>";
+                    datos += "<a href=\"" + links1.getPath() + "\" TARGET=\"Ventana-2\">" + links1.getNombre() + "</a><br>";
                 }
 
                 return datos;
             }
         }
         Ln ln = new Ln();
-
+        int i = 0;
         for (Articulo articulos1 : articulos) {
 
             contenido
                     += "<div class=\"pelicula\" >"
                     + "	<div class=\"poster marco-sinopsis\">"
-                    + "		<a href=\"\">"
-                    + "			<img src=\"" + articulos1.getImagen() + "\" alt=\""+articulos1.getTitulo()+"\" />"
+                    + "		<a href=\"javascript:MostrarOcultar('texto"+i+"');\">"
+                    + "			<img src=\"" + articulos1.getImagen() + "\" alt=\"" + articulos1.getTitulo() + "\" />"
                     + "		</a>	   		"
                     + "		<div class=\"categorias\">"
                     + "			<h2>"
-                    + "				<a href=\"\">"
-                    + "					"+articulos1.getTitulo()+" <br>"
-                    + "					Audion : "+articulos1.getIdioma()+" <br>"
+                    + "				<a href=\"javascript:MostrarOcultar('texto"+i+"');\">"
+                    + "					" + articulos1.getTitulo() + " <br>"
+                    + "					Audion : " + articulos1.getIdioma() + " <br>"
+                    
                     + "				</a>"
                     + "			</h2>"
                     + "		</div>"
+                    
                     + "	</div>"
+                    
+                    + "<div class=\"cp_oculta\" id=\"texto" + i + "\" style=\"z-index: 1\">  "
+                    +       ln.links(articulos1.getLinks())
+                    + "     <a href=\"javascript:MostrarOcultar('texto"+i+"');\"><h2>Ocultar</h2></a>"
+                    + "</div>"
                     + "</div>";
+                    
+                   
+            i++;
 
-        }
+        }i=0;
         return contenido;
     }
 

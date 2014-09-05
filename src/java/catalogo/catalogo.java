@@ -86,6 +86,17 @@ public class catalogo extends HttpServlet {
                     + seccionYcolumna
                     + "        <link rel=\"stylesheet\" href=\"css/posterpelicula.css\">"
                     + "        <link rel=\"stylesheet\" href=\"css/tablas.css\">"
+                    + "<script languaje=\"Javascript\">   "
+                    + "document.write('<style type=\"text/css\">div.cp_oculta{display: none;}</style>');  \n"
+                    + "function MostrarOcultar(capa,enlace)  "
+                    + "{  "
+                    + "    if (document.getElementById)  "
+                    + "    {  "
+                    + "        var aux = document.getElementById(capa).style;  "
+                    + "        aux.display = aux.display? \"\":\"block\";  "
+                    + "    }  "
+                    + "}  "
+                    + "</script> "
                     + "    </head>"
             );
             out.println("<body>");
@@ -94,7 +105,7 @@ public class catalogo extends HttpServlet {
             out.println(
                     "<header id=\"menu\">"
                     + "     <ul class=\"nav\">"
-                    + "          <li><a href=\"\" style= \"padding: 5px\"><img src=\"iconos/a.ico\" width=\"37\" height=\"35\"></a></li>"
+                    + "          <li><a href=\"./index.html\" style= \"padding: 5px\"><img src=\"iconos/a.ico\" width=\"37\" height=\"35\"></a></li>"
                     + header
                     + "      </ul>\n"
                     + "</header>"
@@ -102,7 +113,11 @@ public class catalogo extends HttpServlet {
             out.println("<div id=\"principal\">");
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
+            if (menu == null){
+                out.println("<img src=\"iconos/inicio.jpg\">");
+            }else{
             out.println("<h2>Seccion  -> " + obteneSeccion() + "</h2><br>");
+            }
             if (obteneSeccion().equalsIgnoreCase("videos")) {
                 out.println("<iframe src=\"iconos/inicio.jpg\" name= \"videos\"  width=\"650px\" height=\"400px\" >\n"
                         + "                <p>Your browser does not support iframes.</p>\n"
@@ -117,8 +132,8 @@ public class catalogo extends HttpServlet {
             if (obteneSeccion().equalsIgnoreCase("videos")) {
                 out.println(articulo());
             } else {
-                
-            out.println(columna(menu));
+
+                out.println(columna(menu));
             }
 
             out.println("</aside>");
