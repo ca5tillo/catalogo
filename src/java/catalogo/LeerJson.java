@@ -65,11 +65,11 @@ public class LeerJson {
                         //Titulo
                         objArt.setTitulo((String) Articulo.get("Titulo"));
                         // subtitulo
-//                        objArt.setSubtitulo((String) Articulo.get("Subtitulo"));
+                        objArt.setSubtitulo((String) Articulo.get("Subtitulo"));
                         //Sinopsis
                         objArt.setSinopsis((String) Articulo.get("Sinopsis"));
                         // idioma
-//                        objArt.setIdioma((String) Articulo.get("Idioma"));
+                        objArt.setIdioma((String) Articulo.get("Idioma"));
                         //Imagen
                         objArt.setImagen((String) Articulo.get("Imagen"));// direccion de la imagen 
 
@@ -142,7 +142,9 @@ public class LeerJson {
             articulo = contenidoVideos();
         } else if (seccion.equalsIgnoreCase("libros")) {
             articulo = contenidoLibros();
-        } else {
+        } else if (seccion.equalsIgnoreCase("peliculas")){
+            articulo = contenidoPeliculas();
+        }else {
             articulo = contenidoVarios();
         }
         return articulo;
@@ -222,36 +224,6 @@ public class LeerJson {
 
         return videos;
     }
-//    private String contenidoVideos() {
-//        class Ln {
-//
-//            private String links(ArrayList<Links> links) {
-//                String datos = "<br>";
-//                for (Links links1 : links) {
-//                    datos +=  "<tr>"
-//                            + "   <td>"
-//                            + "      <a href=\"" + links1.getPath() + "\"><h1>" + links1.getNombre() + "</h1></a>"
-//                            + "   </td>"
-//                            + "</tr>";
-//
-//                }
-//
-//                return datos;
-//            }
-//        }
-//        Ln ln = new Ln();
-//        String videos = "<table>";
-//        for (Articulo articulos1 : articulos) {
-//
-//            /*
-//             <a href="a.mp4"  target="videos">  </a>
-//             */
-//            videos += ln.links(articulos1.getLinks());
-//
-//        }
-//        videos += "</table>";
-//        return videos;
-//    }
 
     private String contenidoLibros() {
         String libros = "<div id=\"portada\">\n"
@@ -270,7 +242,7 @@ public class LeerJson {
                             + "                     <a href=\"\"><img src=\"iconos/libro.png\" width=\"42\" height=\"42\"></a>\n"
                             + "                  </td>"
                             + "                  <td>"
-                            + "                     <a href=\"" + links1.getPath() + "\"><h1>" + links1.getNombre() + "</h1></a>"
+                            + "                     <a href=\"" + links1.getPath() + "\" TARGET=\"Ventana-2\"><h1>" + links1.getNombre() + "</h1></a>"
                             + "                  </td>"
                             + "               </tr>";
                 }
@@ -287,6 +259,59 @@ public class LeerJson {
         }
         libros += "</table></div>";
         return libros;
+    }
+
+    private String contenidoPeliculas() {
+        String contenido = "";
+        class Ln {
+
+            private String links(ArrayList<Links> links) {
+                String datos = "<br>";
+                for (Links links1 : links) {
+
+                    datos += "<div class=\"pelicula\" id=\"post-6828\">\n"
+                            + "	<div class=\"poster marco-sinopsis\">\n"
+                            + "		<a href=\"\">\n"
+                            + "			<img src=\"http://2.bp.blogspot.com/-MRictagtHYs/VAUeutMbHHI/AAAAAAAAIyM/8xQZETE3wb4/s1600/Como-Entrenar-A-Tu-Dragon-2-DVDRip-Subtitulado-MEGA-FireDrive-Shared.png\" alt=\"Como Entrenar A Tu Dragon 2 [DVDRip][Subtitulada][FD-SD-MG]\" />\n"
+                            + "		</a>	   		\n"
+                            + "		<div class=\"categorias\">\n"
+                            + "			<h2>\n"
+                            + "				<a href=\"\">\n"
+                            + "					Como Entrenar A Tu Dragon 2 <br>\n"
+                            + "					Audion : litino <br>\n"
+                            + "				</a>\n"
+                            + "			</h2>\n"
+                            + "		</div>\n"
+                            + "	</div>\n"
+                            + "</div>";
+                }
+
+                return datos;
+            }
+        }
+        Ln ln = new Ln();
+
+        for (Articulo articulos1 : articulos) {
+
+            contenido
+                    += "<div class=\"pelicula\" >"
+                    + "	<div class=\"poster marco-sinopsis\">"
+                    + "		<a href=\"\">"
+                    + "			<img src=\"" + articulos1.getImagen() + "\" alt=\""+articulos1.getTitulo()+"\" />"
+                    + "		</a>	   		"
+                    + "		<div class=\"categorias\">"
+                    + "			<h2>"
+                    + "				<a href=\"\">"
+                    + "					"+articulos1.getTitulo()+" <br>"
+                    + "					Audion : "+articulos1.getIdioma()+" <br>"
+                    + "				</a>"
+                    + "			</h2>"
+                    + "		</div>"
+                    + "	</div>"
+                    + "</div>";
+
+        }
+        return contenido;
     }
 
     public ArrayList<String> getEtiquetas_para_columna() {

@@ -76,6 +76,7 @@ header #buscar{
 }
 #portada{
     text-align: center;
+    margin: 0px auto;
 }
 
 #pie {

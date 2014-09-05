@@ -102,7 +102,7 @@ public class catalogo extends HttpServlet {
             out.println("<div id=\"principal\">");
             out.println("<section id=\"seccion\">");
             // AQUI VAN LOS ARTICULOS
-            out.println("<h2>Seccion  -> " + obteneSeccion() + "</h2>");
+            out.println("<h2>Seccion  -> " + obteneSeccion() + "</h2><br>");
             if (obteneSeccion().equalsIgnoreCase("videos")) {
                 out.println("<iframe src=\"iconos/inicio.jpg\" name= \"videos\"  width=\"650px\" height=\"400px\" >\n"
                         + "                <p>Your browser does not support iframes.</p>\n"
