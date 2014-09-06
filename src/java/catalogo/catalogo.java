@@ -39,7 +39,8 @@ public class catalogo extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             String header = "";
-            String menu = request.getParameter("menu");
+            String menu ="";
+            menu += request.getParameter("menu");
             String columna = request.getParameter("columna");
             String articulos = "nada";
 
@@ -68,7 +69,7 @@ public class catalogo extends HttpServlet {
 
             /* TODO output your page here. You may use following sample code. */
             String seccionYcolumna = "";
-            if (obteneSeccion().equalsIgnoreCase("videos")) {
+            if (menu.equalsIgnoreCase("videos")) {
                 seccionYcolumna = "<link rel=\"stylesheet\" href=\"css/seccionYcolumna_videos.css\">";
             } else {
                 seccionYcolumna = "<link rel=\"stylesheet\" href=\"css/seccionYcolumna_sencillo.css\">";
@@ -116,9 +117,9 @@ public class catalogo extends HttpServlet {
             if (menu == null){
                 out.println("<img src=\"iconos/inicio.jpg\">");
             }else{
-            out.println("<h2>Seccion  -> " + obteneSeccion() + "</h2><br>");
+            out.println("<h2>Seccion  -> " + menu + "</h2><br>");
             }
-            if (obteneSeccion().equalsIgnoreCase("videos")) {
+            if (menu.equalsIgnoreCase("videos")) {
                 out.println("<iframe src=\"iconos/inicio.jpg\" name= \"videos\"  width=\"650px\" height=\"400px\" >\n"
                         + "                <p>Your browser does not support iframes.</p>\n"
                         + "                </iframe> ");
@@ -129,7 +130,7 @@ public class catalogo extends HttpServlet {
             out.println("</section>");
             out.println("<aside id=\"columna\">");
             // AQUI VA LA COLUMNA
-            if (obteneSeccion().equalsIgnoreCase("videos")) {
+            if (menu.equalsIgnoreCase("videos")) {
                 out.println(articulo());
             } else {
 
@@ -333,12 +334,6 @@ public class catalogo extends HttpServlet {
         }
 
         return s;
-    }
-
-    public String obteneSeccion() {
-        String a = "";
-        a += aLeerJson.obtenerSeccion();
-        return a;
     }
 
 }

@@ -69,7 +69,7 @@ header #buscar{
 /**/
 
 #principal {
-    background:#fff;
+    background:#d3d7cf;
     width: 960px;
     margin: 0px auto;
     text-align: justify;
@@ -86,3 +86,18 @@ header #buscar{
     border-top: 2px solid #999999;
 }
 img.grande{width: 200px; height: 285px;}
+
+#articleOS{
+    border:solid;
+    width: 200px;
+    height: 400px;
+    margin:10px;
+    float: left;
+    background-color:#cccccc;
+}
+#articleOS a{
+ 
+}
+#articleOS a:hover{
+    background-color:#888a85;
+}

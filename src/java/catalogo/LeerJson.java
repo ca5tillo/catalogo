@@ -36,6 +36,9 @@ public class LeerJson {
         try {
             Object base = parser.parse(new FileReader(path));
             JSONObject jsonBase = (JSONObject) base;
+//Plantilla
+
+            seccion = (String) jsonBase.get("Plantilla");
 
             JSONArray lst_etiquetas = (JSONArray) jsonBase.get("EtiquetasCatalogo");
 
@@ -60,8 +63,8 @@ public class LeerJson {
                             || etiqueta.equalsIgnoreCase("todo")) && i == 0) {
                         i = 1;
                         //seccion 
-                        objArt.setSeccion(varmenu);
-                        seccion = varmenu;
+//                        objArt.setSeccion(varmenu);
+//                        seccion = varmenu;
                         //Titulo
                         objArt.setTitulo((String) Articulo.get("Titulo"));
                         // subtitulo
@@ -144,6 +147,8 @@ public class LeerJson {
             articulo = contenidoLibros();
         } else if (seccion.equalsIgnoreCase("peliculas")) {
             articulo = contenidoPeliculas();
+        } else if (seccion.equalsIgnoreCase("so")) {
+            articulo = contenidoSO();
         } else {
             articulo = contenidoVarios();
         }
@@ -183,7 +188,7 @@ public class LeerJson {
                     + "                                </figure>\n"
                     + "                           </td>\n"
                     + "                           <td> <p>\n"
-                    + "<h2>"+articulos1.getSubtitulo()+"</h2><br>"
+                    + "<h2>" + articulos1.getSubtitulo() + "</h2><br>"
                     + articulos1.getSinopsis()
                     + "                              </p>\n"
                     + "                              <br>\n"
@@ -282,40 +287,62 @@ public class LeerJson {
             contenido
                     += "<div class=\"pelicula\" >"
                     + "	<div class=\"poster marco-sinopsis\">"
-                    + "		<a href=\"javascript:MostrarOcultar('texto"+i+"');\">"
+                    + "		<a href=\"javascript:MostrarOcultar('texto" + i + "');\">"
                     + "			<img src=\"" + articulos1.getImagen() + "\" alt=\"" + articulos1.getTitulo() + "\" />"
                     + "		</a>	   		"
                     + "		<div class=\"categorias\">"
                     + "			<h2>"
-                    + "				<a href=\"javascript:MostrarOcultar('texto"+i+"');\">"
+                    + "				<a href=\"javascript:MostrarOcultar('texto" + i + "');\">"
                     + "					" + articulos1.getTitulo() + " <br>"
                     + "					Audion : " + articulos1.getIdioma() + " <br>"
-                    
                     + "				</a>"
                     + "			</h2>"
                     + "		</div>"
-                    
                     + "	</div>"
-                    
                     + "<div class=\"cp_oculta\" id=\"texto" + i + "\" style=\"z-index: 1\">  "
-                    +       ln.links(articulos1.getLinks())
-                    + "     <a href=\"javascript:MostrarOcultar('texto"+i+"');\"><h2>Ocultar</h2></a>"
+                    + ln.links(articulos1.getLinks())
+                    + "     <a href=\"javascript:MostrarOcultar('texto" + i + "');\"><h2>Ocultar</h2></a>"
                     + "</div>"
                     + "</div>";
-                    
-                   
+
             i++;
 
-        }i=0;
+        }
+        i = 0;
         return contenido;
+    }
+
+    private String contenidoSO() {
+        String so = "";
+        for (Articulo articulos1 : articulos) {
+            String tmp_autores = autores(articulos1.getAutores());
+
+            String temSubtitulo = articulos1.getSubtitulo();
+            String subtitulo = "";
+            if (!temSubtitulo.equalsIgnoreCase("")) {
+                subtitulo = "Duración: " + temSubtitulo + "<br>";
+            }
+            String pathImg = articulos1.getImagen();
+            String img = "";
+            if (!pathImg.equalsIgnoreCase("")) {
+                img = "<img class =\"grande\" src=\"" + pathImg + "\" />";
+            }
+            so += "<div id =\"articleOS\"><figure>"
+                    + img
+                    + "    <figcaption>"
+                    + articulos1.getTitulo()
+                    //                    +         subtitulo
+                    //                    +         articulos1.getSinopsis()
+                    + "<h2>" + links(articulos1.getLinks()) + "</h2><br>"
+                    + "    </figcaption>"
+                    + "</figure></div>";
+
+        }
+        return so;
     }
 
     public ArrayList<String> getEtiquetas_para_columna() {
         return etiquetas_para_columna;
-    }
-
-    public String obtenerSeccion() {
-        return seccion;
     }
 
 }
